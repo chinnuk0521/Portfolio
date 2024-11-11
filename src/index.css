@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply text-slate-600 antialiased;
+}
+
+::selection {
+  @apply bg-blue-600 text-white;
+}
+
+.skill-bar {
+  transition: transform 1s ease-out;
+}
+
+.animate-skill {
+  transform: translateX(0);
+}
