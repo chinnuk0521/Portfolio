@@ -96,7 +96,7 @@ const FloatingNav = () => {
           {/* Logo Section */}
           <div className="flex items-center">
             <img 
-              src="/Logo.png" 
+              src="./Logo.png" 
               alt="Chandu Kalluru Logo" 
               className="w-14 h-14 rounded-xl object-cover"
             />
