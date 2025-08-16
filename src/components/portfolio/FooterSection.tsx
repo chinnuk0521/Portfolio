@@ -1,174 +1,160 @@
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-import { 
-  Github, 
-  Linkedin, 
-  Twitter, 
-  Mail, 
-  Heart,
-  Code2,
-  Zap,
-  Shield
-} from 'lucide-react';
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
 
 const FooterSection = () => {
-  const currentYear = new Date().getFullYear();
-  
-  const socialLinks = [
-    { icon: Github, name: 'GitHub', url: '#' },
-    { icon: Linkedin, name: 'LinkedIn', url: '#' },
-    { icon: Twitter, name: 'Twitter', url: '#' },
-    { icon: Mail, name: 'Email', url: 'mailto:chandu@example.com' }
-  ];
+  const footerRef = useRef(null);
+  const topCurtainRef = useRef(null);
+  const bottomCurtainRef = useRef(null);
+  const textRef = useRef(null);
+  const hasAnimated = useRef(false);
 
-  const quickLinks = [
-    { name: 'About', href: '#about' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Tech Stack', href: '#tech-stack' },
-    { name: 'Contact', href: '#contact' }
-  ];
+  const [displayText, setDisplayText] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const services = [
-    { name: 'Web Development', href: '#' },
-    { name: 'Mobile Apps', href: '#' },
-    { name: 'AI/ML Solutions', href: '#' },
-    { name: 'Blockchain', href: '#' }
-  ];
+  const fullText = "THANKS FOR VISITING";
+  const subtitleText = "– with love, Chandu Kalluru";
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  // Typewriter effect for the main title
+  useEffect(() => {
+    if (currentIndex < fullText.length) {
+      const timeout = setTimeout(() => {
+        setDisplayText((prev) => prev + fullText[currentIndex]);
+        setCurrentIndex((prev) => prev + 1);
+      }, 100); // Speed of typing (100ms per character)
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId.replace('#', ''));
-    element?.scrollIntoView({ behavior: 'smooth' });
-  };
+      return () => clearTimeout(timeout);
+    }
+  }, [currentIndex, fullText]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !hasAnimated.current) {
+            console.log("Footer intersecting, checking refs...");
+            console.log("Top curtain ref:", topCurtainRef.current);
+            console.log("Bottom curtain ref:", bottomCurtainRef.current);
+            console.log("Text ref:", textRef.current);
+
+            // Check if all refs are available
+            if (
+              topCurtainRef.current &&
+              bottomCurtainRef.current &&
+              textRef.current
+            ) {
+              console.log("All refs available, starting animation...");
+              hasAnimated.current = true;
+
+              // Small delay to ensure DOM is ready
+              setTimeout(() => {
+                console.log("Starting GSAP animation...");
+                // Create the cinematic curtain closing effect
+                const tl = gsap.timeline({ ease: "power4.inOut" });
+
+                // Initial state: curtains are open (positioned at top and bottom)
+                gsap.set(topCurtainRef.current, { y: "-100%" });
+                gsap.set(bottomCurtainRef.current, { y: "100%" });
+                gsap.set(textRef.current, { opacity: 0, scale: 0.8 });
+
+                // Curtains close from top and bottom towards center
+                tl.to(
+                  topCurtainRef.current,
+                  {
+                    y: "0%",
+                    duration: 1.5,
+                    ease: "power4.inOut",
+                  },
+                  0
+                )
+                  .to(
+                    bottomCurtainRef.current,
+                    {
+                      y: "0%",
+                      duration: 1.5,
+                      ease: "power4.inOut",
+                    },
+                    0
+                  )
+                  .to(
+                    textRef.current,
+                    {
+                      opacity: 1,
+                      scale: 1,
+                      duration: 1.2,
+                      ease: "power4.inOut",
+                    },
+                    1.5
+                  ) // Text appears after curtains are fully closed
+                  .call(
+                    () => {
+                      // Start typing animation after text is visible
+                      setCurrentIndex(0);
+                      setDisplayText("");
+                    },
+                    [],
+                    2.7
+                  ); // Start typing after curtains close and text appears
+              }, 100);
+            } else {
+              console.log("Some refs are missing, cannot start animation");
+            }
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (footerRef.current) {
+      observer.observe(footerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <footer className="relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background-secondary to-background-secondary" />
-      
-      {/* Main Footer Content */}
-      <div className="relative z-10 py-16 px-6">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-            {/* Brand Section */}
-            <div className="lg:col-span-1">
-              <div className="mb-4">
-                <h3 className="text-2xl font-bold text-gradient mb-2">
-                  CHANDU KALLURU
-                </h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  Versatile Developer | Creative Innovator | Reliable Partner
-                </p>
-              </div>
-              <div className="flex gap-3">
-                {socialLinks.map((social) => (
-                  <Button 
-                    key={social.name}
-                    variant="ghost" 
-                    size="icon"
-                    className="hover-lift hover:text-primary"
-                    onClick={() => window.open(social.url, '_blank')}
-                  >
-                    <social.icon className="h-5 w-5" />
-                  </Button>
-                ))}
-              </div>
-            </div>
+    <footer
+      ref={footerRef}
+      className="relative h-screen bg-black overflow-hidden"
+    >
+      {/* Top Curtain */}
+      <div
+        ref={topCurtainRef}
+        className="absolute top-0 left-0 w-full h-1/2 bg-black z-10"
+        style={{ transform: "translateY(-100%)" }}
+      />
 
-            {/* Quick Links */}
-            <div>
-              <h4 className="font-semibold text-foreground mb-4">Navigation</h4>
-              <ul className="space-y-2">
-                {quickLinks.map((link) => (
-                  <li key={link.name}>
-                    <button
-                      onClick={() => scrollToSection(link.href)}
-                      className="text-muted-foreground hover:text-primary transition-colors text-sm"
-                    >
-                      {link.name}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
+      {/* Bottom Curtain */}
+      <div
+        ref={bottomCurtainRef}
+        className="absolute bottom-0 left-0 w-full h-1/2 bg-black z-10"
+        style={{ transform: "translateY(100%)" }}
+      />
 
-            {/* Services */}
-            <div>
-              <h4 className="font-semibold text-foreground mb-4">Services</h4>
-              <ul className="space-y-2">
-                {services.map((service) => (
-                  <li key={service.name}>
-                    <button className="text-muted-foreground hover:text-primary transition-colors text-sm">
-                      {service.name}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
+      {/* Footer Content */}
+      <div className="relative z-20 h-full flex flex-col justify-center items-center text-center px-4">
+        <div
+          ref={textRef}
+          className="space-y-8"
+          style={{ opacity: 0, transform: "scale(0.8)" }}
+        >
+          {/* Main Title with Typing Effect */}
+          <h2 className="text-6xl md:text-8xl lg:text-9xl font-black text-white tracking-tight leading-none min-h-[1.2em]">
+            {displayText}
+            <span className="typing-cursor">|</span>
+          </h2>
 
-            {/* Contact Info */}
-            <div>
-              <h4 className="font-semibold text-foreground mb-4">Get In Touch</h4>
-              <div className="space-y-2 text-sm text-muted-foreground">
-                <p>chandu@example.com</p>
-                <p>Available for new projects</p>
-                <p>Response time: &lt; 24 hours</p>
-              </div>
-              <Button 
-                variant="hero" 
-                size="sm" 
-                className="mt-4"
-                onClick={() => scrollToSection('#contact')}
-              >
-                Start Project
-              </Button>
-            </div>
-          </div>
-
-          <Separator className="bg-glass-border mb-8" />
-
-          {/* Bottom Section */}
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="text-sm text-muted-foreground">
-              © {currentYear} Chandu Kalluru. All rights reserved.
+          {/* Subtitle - appears after main title is fully typed */}
+          {currentIndex >= fullText.length && (
+            <p className="text-2xl md:text-3xl lg:text-4xl text-gray-300 font-medium animate-fade-in">
+              {subtitleText}
+            </p>
+          )}
             </div>
             
-            {/* Trust Indicators */}
-            <div className="flex items-center gap-6 text-xs text-muted-foreground">
-              <div className="flex items-center gap-1">
-                <Code2 className="h-3 w-3" />
-                <span>Clean Code</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <Zap className="h-3 w-3" />
-                <span>Fast Delivery</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <Shield className="h-3 w-3" />
-                <span>Secure Solutions</span>
-              </div>
-            </div>
-            
-            <button
-              onClick={scrollToTop}
-              className="text-sm text-muted-foreground hover:text-primary transition-colors"
-            >
-              Back to top ↑
-            </button>
-          </div>
+        {/* Copyright */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30">
+          <p className="text-sm text-gray-500">© All Rights Reserved</p>
         </div>
-      </div>
-
-      {/* Subtle Background Elements */}
-      <div className="absolute top-20 left-10 w-1 h-1 bg-primary/30 rounded-full animate-float" />
-      <div className="absolute bottom-20 right-20 w-1.5 h-1.5 bg-accent/20 rounded-full animate-float delay-1000" />
-      
-      {/* Made with Love */}
-      <div className="absolute bottom-4 right-6 text-xs text-muted-foreground/50 flex items-center gap-1">
-        Made with <Heart className="h-3 w-3 text-red-400" /> using React
       </div>
     </footer>
   );

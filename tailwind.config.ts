@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from 'tailwindcss-animate';
 
 export default {
 	darkMode: ["class"],
@@ -85,6 +86,7 @@ export default {
 				'glow': 'var(--shadow-glow)',
 				'card': 'var(--shadow-card)',
 				'elevated': 'var(--shadow-elevated)',
+				'neon': 'var(--shadow-neon)',
 			},
 			transitionTimingFunction: {
 				'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
@@ -111,13 +113,115 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fadeIn': {
+					from: {
+						opacity: '0',
+						transform: 'translateY(30px)'
+					},
+					to: {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
+				},
+				'slideUp': {
+					from: {
+						opacity: '0',
+						transform: 'translateY(60px)'
+					},
+					to: {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
+				},
+				'float': {
+					'0%, 100%': {
+						transform: 'translateY(0px) rotate(0deg)'
+					},
+					'50%': {
+						transform: 'translateY(-20px) rotate(5deg)'
+					}
+				},
+				'glow': {
+					from: {
+						textShadow: '0 0 20px hsl(262 83% 58% / 0.5)'
+					},
+					to: {
+						textShadow: '0 0 30px hsl(262 83% 58% / 0.8), 0 0 40px hsl(262 83% 58% / 0.3)'
+					}
+				},
+				'breathe': {
+					'0%, 100%': {
+						transform: 'scale(1)'
+					},
+					'50%': {
+						transform: 'scale(1.05)'
+					}
+				},
+				'shimmer': {
+					'0%': {
+						backgroundPosition: '-200% 0'
+					},
+					'100%': {
+						backgroundPosition: '200% 0'
+					}
+				},
+				'pulseSlow': {
+					'0%, 100%': {
+						opacity: '1'
+					},
+					'50%': {
+						opacity: '0.7'
+					}
+				},
+				'floatDramatic': {
+					'0%, 100%': {
+						transform: 'translateY(0px) rotate(0deg) scale(1)'
+					},
+					'25%': {
+						transform: 'translateY(-20px) rotate(5deg) scale(1.1)'
+					},
+					'50%': {
+						transform: 'translateY(-10px) rotate(-5deg) scale(0.9)'
+					},
+					'75%': {
+						transform: 'translateY(-15px) rotate(3deg) scale(1.05)'
+					}
+				},
+				'textReveal': {
+					'0%': {
+						clipPath: 'inset(0 100% 0 0)',
+						transform: 'translateX(-50px)'
+					},
+					'100%': {
+						clipPath: 'inset(0 0% 0 0)',
+						transform: 'translateX(0)'
+					}
+				},
+				'curtainRise': {
+					'0%': {
+						transform: 'translateY(-100%) scaleY(1)'
+					},
+					'100%': {
+						transform: 'translateY(0%) scaleY(0)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fadeIn 0.8s ease-out forwards',
+				'slide-up': 'slideUp 1s ease-out forwards',
+				'float': 'float 6s ease-in-out infinite',
+				'glow': 'glow 2s ease-in-out infinite alternate',
+				'breathe': 'breathe 4s ease-in-out infinite',
+				'shimmer': 'shimmer 2s linear infinite',
+				'pulse-slow': 'pulseSlow 3s ease-in-out infinite',
+				'float-dramatic': 'floatDramatic 6s ease-in-out infinite',
+				'text-reveal': 'textReveal 1.5s ease-out forwards',
+				'curtain-rise': 'curtainRise 2s ease-in-out forwards'
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [tailwindcssAnimate],
 } satisfies Config;

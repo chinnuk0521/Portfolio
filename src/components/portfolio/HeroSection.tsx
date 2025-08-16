@@ -1,112 +1,226 @@
-import { Button } from '@/components/ui/button';
-import { ChevronDown, Github, Linkedin, Mail } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import retroBg from '@/assets/retro-bg.jpg';
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { useSmoothScroll } from "@/hooks/use-smooth-scroll";
 
 const HeroSection = () => {
-  const [displayText, setDisplayText] = useState('');
-  const fullText = 'CHANDU KALLURU';
-  
+  const heroRef = useRef(null);
+  const nameRef = useRef(null);
+  const curtainRef = useRef(null);
+  const contentRef = useRef(null);
+  const backgroundRef = useRef(null);
+  const roleRef = useRef(null);
+  const { scrollToSection } = useSmoothScroll();
+
+  const [currentRole, setCurrentRole] = useState(0);
+  const roles = [
+    "Full Stack Developer",
+    "Frontend Developer",
+    "Backend Developer",
+    "Mobile Developer",
+    "UI/UX Designer",
+    "Blockchain Developer",
+    "Data Analyst",
+    "Business Analyst",
+    "Data Engineer",
+  ];
+
   useEffect(() => {
-    let currentIndex = 0;
-    const interval = setInterval(() => {
-      if (currentIndex <= fullText.length) {
-        setDisplayText(fullText.slice(0, currentIndex));
-        currentIndex++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 150);
-    
-    return () => clearInterval(interval);
+    // GSAP Timeline for Cinematic Curtain Effect
+    const tl = gsap.timeline();
+
+    // Initial state - everything hidden
+    gsap.set([nameRef.current, contentRef.current], {
+      opacity: 0,
+      y: 50,
+    });
+
+    gsap.set(curtainRef.current, {
+      y: "-100%",
+      scaleY: 1,
+    });
+
+    // 1. Curtain rises like old movie theatre (power4.inOut for smoothness)
+    tl.to(curtainRef.current, {
+      y: "0%",
+      scaleY: 0,
+      duration: 2.5,
+      ease: "power4.inOut",
+      transformOrigin: "top",
+    })
+      // 2. Name appears with dramatic scale and glow
+      .to(
+        nameRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1.5,
+          ease: "power3.out",
+        },
+        "-=1"
+      )
+      // 3. Apply glow effect to the name
+      .to(
+        nameRef.current,
+        {
+          textShadow:
+            "0 0 30px rgba(0,0,0,0.8), 0 0 60px rgba(0,0,0,0.6), 0 0 90px rgba(0,0,0,0.4)",
+          duration: 1,
+          ease: "power2.out",
+        },
+        "-=0.5"
+      )
+      // 4. Content fades in
+      .to(
+        contentRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power2.out",
+        },
+        "-=0.3"
+      );
+
+    // Parallax background effect on scroll
+    const handleScroll = () => {
+      const scrolled = window.pageYOffset;
+      const rate = scrolled * -0.5;
+      gsap.to(backgroundRef.current, {
+        y: rate,
+        duration: 0.1,
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    element?.scrollIntoView({ behavior: 'smooth' });
-  };
+  // Role animation effect
+  useEffect(() => {
+    const roleElement = roleRef.current;
+    if (roleElement) {
+      // Animate role changes every 3 seconds
+      const interval = setInterval(() => {
+        gsap.to(roleElement, {
+          opacity: 0,
+          y: -20,
+          duration: 0.3,
+          ease: "power2.out",
+          onComplete: () => {
+            setCurrentRole((prev) => (prev + 1) % roles.length);
+            gsap.to(roleElement, {
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              ease: "power2.out",
+            });
+          },
+        });
+      }, 3000);
+
+      return () => clearInterval(interval);
+    }
+  }, [roles.length]);
+
+
 
   return (
-    <section className="min-h-screen relative flex items-center justify-center overflow-hidden">
-      {/* Background */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10"
-        style={{ backgroundImage: `url(${retroBg})` }}
+    <section
+      ref={heroRef}
+      className="min-h-screen relative flex items-center justify-center overflow-hidden bg-white"
+    >
+      {/* Parallax Background - Dark gradient with tech pattern */}
+      <div
+        ref={backgroundRef}
+        className="absolute inset-0 opacity-20 parallax-bg"
+        style={{
+          background: `
+            linear-gradient(135deg, #000000 0%, #1a1a1a 25%, #333333 50%, #1a1a1a 75%, #000000 100%),
+            radial-gradient(circle at 20% 80%, rgba(0,0,0,0.3) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(0,0,0,0.3) 0%, transparent 50%)
+          `,
+          backgroundSize: "100% 100%, 800px 800px, 600px 600px",
+        }}
       />
-      
-      {/* Floating Elements - Retro geometric shapes */}
-      <div className="absolute top-20 left-20 w-4 h-4 border border-primary opacity-30 animate-float" />
-      <div className="absolute top-40 right-32 w-2 h-2 bg-primary opacity-40 animate-float delay-1000" style={{ clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }} />
-      <div className="absolute bottom-32 left-1/4 w-3 h-3 border border-accent opacity-25 animate-float delay-2000" style={{ transform: 'rotate(45deg)' }} />
-      
-      {/* Content */}
-      <div className="container mx-auto px-6 text-center z-10">
-        <div className="max-w-4xl mx-auto">
-          {/* Animated Name */}
-          <div className="mb-6">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
-              <span className="text-gradient animate-glow inline-block">
-                {displayText}
-                <span className="animate-pulse border-r-2 border-primary ml-1">|</span>
-              </span>
-            </h1>
-          </div>
-          
-          {/* Tagline */}
-          <div className="mb-8 animate-fade-in" style={{ animationDelay: '2s' }}>
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Building the future with{' '}
-              <span className="text-primary font-semibold">code</span>,{' '}
-              <span className="text-accent font-semibold">creativity</span>, and{' '}
-              <span className="text-secondary font-semibold">innovation</span>
-            </p>
-          </div>
-          
-          {/* Call to Action */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 animate-slide-up" style={{ animationDelay: '2.5s' }}>
-            <Button 
-              variant="hero" 
-              size="xl"
-              onClick={() => scrollToSection('projects')}
-              className="min-w-48"
-            >
-              View My Work
-            </Button>
-            <Button 
-              variant="glass" 
-              size="xl"
-              onClick={() => scrollToSection('contact')}
-              className="min-w-48"
-            >
-              <Mail className="mr-2 h-5 w-5" />
-              Get In Touch
-            </Button>
-          </div>
-          
-          {/* Social Links */}
-          <div className="flex justify-center gap-6 mb-16 animate-fade-in" style={{ animationDelay: '3s' }}>
-            <Button variant="ghost" size="icon" className="hover-lift">
-              <Github className="h-6 w-6" />
-            </Button>
-            <Button variant="ghost" size="icon" className="hover-lift">
-              <Linkedin className="h-6 w-6" />
-            </Button>
-            <Button variant="ghost" size="icon" className="hover-lift">
-              <Mail className="h-6 w-6" />
-            </Button>
+
+      {/* Cinematic Curtain - Black overlay that rises up */}
+      <div
+        ref={curtainRef}
+        className="absolute inset-0 bg-black z-50"
+        style={{
+          backgroundImage: `
+            linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px),
+            linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px)
+          `,
+          backgroundSize: "100px 100px",
+        }}
+      />
+
+      {/* Main Content Container */}
+      <div className="container mx-auto px-6 text-center z-10 relative w-full">
+        {/* Epic Name Display - Covers almost full screen width */}
+        <div className="mb-16 relative">
+          <h1
+            ref={nameRef}
+            className="hero-name cinematic-text text-6xl md:text-8xl lg:text-[10rem] xl:text-[12rem] 2xl:text-[14rem] font-black tracking-tighter leading-none select-none"
+            style={{
+              textShadow: "0 0 20px rgba(0,0,0,0.5)",
+              WebkitTextStroke: "1px rgba(0,0,0,0.1)",
+            }}
+          >
+            <span className="text-gray-900 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 bg-clip-text text-transparent">
+              CHANDU KALLURU
+            </span>
+          </h1>
+
+          {/* Enhanced glow effect behind name */}
+          <div className="absolute inset-0 -z-10 blur-3xl opacity-30">
+            <div className="w-full h-full bg-gradient-to-r from-gray-800 via-gray-600 to-gray-800 rounded-full scale-150" />
           </div>
         </div>
-        
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <Button 
-            variant="ghost" 
-            size="icon"
-            onClick={() => scrollToSection('about')}
-            className="rounded-full"
-          >
-            <ChevronDown className="h-6 w-6 text-muted-foreground" />
-          </Button>
+
+        {/* Content Section - Fades in after name reveal */}
+        <div ref={contentRef} className="space-y-12">
+          {/* Professional Tagline with Animated Roles */}
+          <div className="mb-8">
+            <p className="text-2xl md:text-3xl lg:text-4xl text-gray-600 font-medium leading-relaxed">
+              {" "}
+              <span
+                ref={roleRef}
+                className="role-animation role-text font-mono px-2 inline-block min-w-[300px]"
+              >
+                {roles[currentRole]}
+              </span>
+            </p>
+            <p className="text-xl md:text-2xl text-gray-500 mt-4 leading-relaxed">
+              Building the future with code, creativity, and innovation
+            </p>
+          </div>
+
+          {/* Navigation Buttons */}
+          <div className="flex flex-wrap justify-center gap-4 mt-12">
+            <button
+              onClick={() => scrollToSection('about', { duration: 1200, easing: 'easeInOut' })}
+              className="px-8 py-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 hover:shadow-lg font-medium text-lg"
+            >
+              About Me
+            </button>
+            <button
+              onClick={() => scrollToSection('projects', { duration: 1200, easing: 'easeInOut' })}
+              className="px-8 py-4 bg-transparent border-2 border-gray-900 text-gray-900 rounded-lg hover:bg-gray-900 hover:text-white transition-all duration-300 transform hover:scale-105 hover:shadow-lg font-medium text-lg"
+            >
+              View Projects
+            </button>
+            <button
+              onClick={() => scrollToSection('contact', { duration: 1200, easing: 'easeInOut' })}
+              className="px-8 py-4 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-all duration-300 transform hover:scale-105 hover:shadow-lg font-medium text-lg"
+            >
+              Get In Touch
+            </button>
+          </div>
         </div>
       </div>
     </section>

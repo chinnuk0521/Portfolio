@@ -1,268 +1,223 @@
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import { 
-  Mail, 
-  MessageSquare, 
-  Calendar, 
-  Github, 
-  Linkedin, 
-  Twitter,
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Send,
+  Star,
+  Zap,
+  CheckCircle,
+  Mail,
+  Phone,
   MapPin,
   Clock,
-  CheckCircle
-} from 'lucide-react';
-import { useState } from 'react';
+  Github,
+  Linkedin,
+  Twitter,
+} from "lucide-react";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
 
 const ContactSection = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    project: '',
-    budget: '',
-    message: ''
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted:', formData);
-  };
+  const sectionRef = useRef(null);
+  const titleRef = useRef(null);
+  const contentRef = useRef(null);
+  const contactRef = useRef(null);
+  const socialRef = useRef(null);
 
   const contactMethods = [
     {
       icon: Mail,
-      title: 'Email',
-      description: 'chandu@example.com',
-      action: 'Send Email',
-      color: 'text-blue-400'
+      title: "Email",
+      value: "buildwithchandu@hotmail.com",
+      action: () => window.open("mailto:buildwithchandu@hotmail.com", "_blank"),
+      description: "Click to send email",
     },
     {
-      icon: MessageSquare,
-      title: 'WhatsApp',
-      description: '+1 (555) 123-4567',
-      action: 'Send Message',
-      color: 'text-green-400'
+      icon: Phone,
+      title: "Phone",
+      value: "+91 - 8179299096",
+      action: () => window.open("tel:+918179299096", "_blank"),
+      description: "Click to call",
     },
     {
-      icon: Calendar,
-      title: 'Schedule Call',
-      description: '30-min consultation',
-      action: 'Book Now',
-      color: 'text-purple-400'
-    }
+      icon: MapPin,
+      title: "Location",
+      value: "Remote / Worldwide",
+      description: "Available globally",
+    },
   ];
 
   const socialLinks = [
-    { icon: Github, name: 'GitHub', url: '#', color: 'hover:text-gray-400' },
-    { icon: Linkedin, name: 'LinkedIn', url: '#', color: 'hover:text-blue-400' },
-    { icon: Twitter, name: 'Twitter', url: '#', color: 'hover:text-sky-400' }
+    { icon: Github, label: "GitHub", url: "https://github.com/chinnuk0521" },
+    {
+      icon: Linkedin,
+      label: "LinkedIn",
+      url: "https://www.linkedin.com/in/chandu-kalluru",
+    },
+    { icon: Twitter, label: "X (Twitter)", url: "https://x.com/Kalluru0521" },
+    { icon: Mail, label: "Email", url: "mailto:buildwithchandu@hotmail.com" },
   ];
 
-  const services = [
-    'Full-Stack Development',
-    'AI/ML Integration',
-    'Blockchain Development',
-    'Mobile Applications',
-    'Cloud Architecture',
-    'Technical Consulting'
-  ];
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const tl = gsap.timeline();
+
+            tl.fromTo(
+              titleRef.current,
+              {
+                opacity: 0,
+                y: 50,
+                scale: 0.9,
+              },
+              {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 1,
+                ease: "power3.out",
+              }
+            )
+              .fromTo(
+                contentRef.current,
+                {
+                  opacity: 0,
+                  y: 30,
+                },
+                {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.8,
+                  ease: "power2.out",
+                },
+                "-=0.3"
+              )
+              .fromTo(
+                contactRef.current,
+                {
+                  opacity: 0,
+                  y: 40,
+                },
+                {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.8,
+                  ease: "power2.out",
+                },
+                "-=0.2"
+              )
+              .fromTo(
+                socialRef.current,
+                {
+                  opacity: 0,
+                  y: 40,
+                },
+                {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.8,
+                  ease: "power2.out",
+                },
+                "-=0.1"
+              );
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section id="contact" className="py-20 px-6 bg-background-secondary">
-      <div className="container mx-auto max-w-6xl">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Let's Build <span className="text-gradient">Together</span>
+    <section
+      id="contact"
+      ref={sectionRef}
+      className="py-24 relative overflow-hidden bg-white"
+    >
+      {/* Parallax Background - Subtle tech pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div
+          className="h-full w-full"
+          style={{
+            backgroundImage: `
+            linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px),
+            linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px)
+          `,
+            backgroundSize: "100px 100px",
+          }}
+        />
+      </div>
+
+      <div className="container mx-auto w-[90%] relative z-10">
+        {/* Section Header */}
+        <div ref={titleRef} className="text-center mb-20">
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 mb-8 tracking-tight">
+            Let's Build Together
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Ready to turn your vision into reality? Let's discuss your project and 
-            create something extraordinary together.
+          <p className="text-2xl md:text-3xl text-gray-600 w-full mx-auto leading-relaxed max-w-6xl">
+            Ready to turn your vision into reality? Let's discuss your project
+            and create something extraordinary together.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Contact Form */}
-          <div className="lg:col-span-2">
-            <Card className="p-8 bg-gradient-card border-glass-border">
-              <div className="mb-6">
-                <h3 className="text-2xl font-semibold text-foreground mb-2">
-                  Start Your Project
-                </h3>
-                <p className="text-muted-foreground">
-                  Fill out the form below and I'll get back to you within 24 hours.
-                </p>
-              </div>
-
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Name *</Label>
-                    <Input
-                      id="name"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="bg-background/50 border-glass-border"
-                      required
-                    />
+        {/* Contact Methods */}
+        <div ref={contentRef} className="mb-20">
+          <div
+            ref={contactRef}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          >
+            {contactMethods.map((method, index) => (
+              <Card
+                key={method.title}
+                className="retro-card p-8 hover:scale-105 transition-all duration-500 group cursor-pointer"
+                style={{ animationDelay: `${index * 0.1}s` }}
+                onClick={method.action}
+              >
+                <CardContent className="p-0 text-center">
+                  <div className="mb-6">
+                    <method.icon className="h-16 w-16 text-black mx-auto group-hover:scale-110 transition-transform duration-300" />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email *</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="bg-background/50 border-glass-border"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="project">Project Type</Label>
-                    <Input
-                      id="project"
-                      value={formData.project}
-                      onChange={(e) => setFormData({ ...formData, project: e.target.value })}
-                      placeholder="e.g., Web App, Mobile App, AI Solution"
-                      className="bg-background/50 border-glass-border"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="budget">Budget Range</Label>
-                    <Input
-                      id="budget"
-                      value={formData.budget}
-                      onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                      placeholder="e.g., $10k - $50k"
-                      className="bg-background/50 border-glass-border"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="message">Project Details *</Label>
-                  <Textarea
-                    id="message"
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="Tell me about your project, goals, and requirements..."
-                    className="bg-background/50 border-glass-border min-h-32"
-                    required
-                  />
-                </div>
-
-                <Button type="submit" variant="hero" size="lg" className="w-full">
-                  Send Message
-                </Button>
-              </form>
-            </Card>
-          </div>
-
-          {/* Contact Info & Methods */}
-          <div className="space-y-6">
-            {/* Contact Methods */}
-            <Card className="p-6 bg-glass border-glass-border">
-              <h3 className="text-xl font-semibold mb-4 text-foreground">
-                Get In Touch
-              </h3>
-              <div className="space-y-4">
-                {contactMethods.map((method) => (
-                  <div key={method.title} className="flex items-center p-3 rounded-lg bg-background/30 hover:bg-background/50 transition-colors cursor-pointer">
-                    <div className={`w-10 h-10 rounded-lg bg-gradient-accent/20 flex items-center justify-center mr-3`}>
-                      <method.icon className={`h-5 w-5 ${method.color}`} />
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-medium text-foreground text-sm">{method.title}</div>
-                      <div className="text-muted-foreground text-xs">{method.description}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Card>
-
-            {/* Services */}
-            <Card className="p-6 bg-glass border-glass-border">
-              <h3 className="text-xl font-semibold mb-4 text-foreground">
-                Services Offered
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {services.map((service) => (
-                  <Badge 
-                    key={service} 
-                    variant="secondary" 
-                    className="text-xs px-2 py-1 bg-background/50"
-                  >
-                    {service}
-                  </Badge>
-                ))}
-              </div>
-            </Card>
-
-            {/* Quick Info */}
-            <Card className="p-6 bg-glass border-glass-border">
-              <h3 className="text-xl font-semibold mb-4 text-foreground">
-                Quick Info
-              </h3>
-              <div className="space-y-3">
-                <div className="flex items-center text-sm">
-                  <MapPin className="h-4 w-4 text-muted-foreground mr-2" />
-                  <span className="text-muted-foreground">Available Worldwide</span>
-                </div>
-                <div className="flex items-center text-sm">
-                  <Clock className="h-4 w-4 text-muted-foreground mr-2" />
-                  <span className="text-muted-foreground">EST (UTC-5)</span>
-                </div>
-                <div className="flex items-center text-sm">
-                  <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
-                  <span className="text-muted-foreground">Available for new projects</span>
-                </div>
-              </div>
-            </Card>
-
-            {/* Social Links */}
-            <Card className="p-6 bg-glass border-glass-border">
-              <h3 className="text-xl font-semibold mb-4 text-foreground">
-                Connect
-              </h3>
-              <div className="flex gap-3">
-                {socialLinks.map((social) => (
-                  <Button 
-                    key={social.name} 
-                    variant="ghost" 
-                    size="icon"
-                    className={`hover-lift ${social.color}`}
-                  >
-                    <social.icon className="h-5 w-5" />
-                  </Button>
-                ))}
-              </div>
-            </Card>
+                  <h3 className="text-2xl font-bold text-gray-800 mb-4">
+                    {method.title}
+                  </h3>
+                  <p className="text-xl text-gray-600 font-medium mb-2">
+                    {method.value}
+                  </p>
+                  <p className="text-sm text-gray-500">{method.description}</p>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
 
-        {/* Trust Indicators */}
-        <div className="mt-16 text-center">
-          <Card className="p-6 bg-gradient-card border-glass-border inline-block">
-            <div className="flex flex-col sm:flex-row items-center gap-4">
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-5 w-5 text-green-400" />
-                <span className="text-sm text-muted-foreground">Typically responds within 4 hours</span>
+        {/* Social Links */}
+        <div ref={socialRef} className="text-center">
+          <Card className="retro-card p-12 hover:scale-105 transition-all duration-500">
+            <CardContent className="p-0">
+              <h3 className="text-3xl md:text-4xl font-bold text-gray-800 mb-8">
+                Connect With Me
+              </h3>
+              <div className="flex justify-center gap-6">
+                {socialLinks.map((social) => (
+                  <Button
+                    key={social.label}
+                    variant="ghost"
+                    size="icon"
+                    className="w-16 h-16 hover:bg-gray-100 hover:text-gray-800 transition-all duration-300 hover:scale-125 border-2 border-gray-300 hover:border-gray-800"
+                    onClick={() => window.open(social.url, "_blank")}
+                  >
+                    <social.icon className="h-8 w-8 text-black" />
+                  </Button>
+                ))}
               </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-5 w-5 text-green-400" />
-                <span className="text-sm text-muted-foreground">100% confidentiality guaranteed</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-5 w-5 text-green-400" />
-                <span className="text-sm text-muted-foreground">Free initial consultation</span>
-              </div>
-            </div>
+            </CardContent>
           </Card>
         </div>
       </div>

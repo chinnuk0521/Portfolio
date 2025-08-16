@@ -1,204 +1,311 @@
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { useEffect, useState } from 'react';
-import { 
-  Code2, 
-  Database, 
-  Cloud, 
-  Brain, 
-  Smartphone, 
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Zap,
+  Star,
   Cpu,
-  GitBranch
-} from 'lucide-react';
+  TrendingUp,
+  Code2,
+  Database,
+  Cloud,
+  Brain,
+} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
 
 const TechStackSection = () => {
+  const sectionRef = useRef(null);
+  const titleRef = useRef(null);
+  const contentRef = useRef(null);
+  const categoriesRef = useRef(null);
+  const statsRef = useRef(null);
+
   const [currentRole, setCurrentRole] = useState(0);
   const roles = [
-    'Frontend Developer',
-    'Backend Developer', 
-    'Full Stack Developer',
-    'Mobile Developer',
-    'AI/ML Engineer',
-    'DevOps Engineer'
+    "Full Stack Developer",
+    "Web Developer",
+    "Mobile Developer",
+    "UI/UX Designer",
+    "Software Engineer",
+    "Frontend Developer",
+    "Backend Developer",
+    "React Developer",
+    "Next.js Developer",
   ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentRole((prev) => (prev + 1) % roles.length);
-    }, 2000);
-    return () => clearInterval(interval);
-  }, [roles.length]);
 
   const techCategories = [
     {
+      title: "Web Applications",
+      skills: [
+        "React",
+        "Next.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "Redux",
+        "Node.js",
+      ],
       icon: Code2,
-      title: 'Frontend Development',
-      color: 'text-foreground',
-      skills: ['React', 'Next.js', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'HTML5', 'CSS3']
+      color: "from-gray-800 to-gray-600",
+      iconColor: "text-gray-700",
     },
     {
-      icon: Database,
-      title: 'Backend & Databases',
-      color: 'text-foreground',
-      skills: ['Node.js', 'Python', 'PostgreSQL', 'MongoDB', 'REST APIs', 'GraphQL', 'Express.js']
+      title: "Mobile Applications",
+      skills: [
+        "React Native",
+        "Flutter",
+        "iOS Development",
+        "Android Development",
+        "Mobile UI/UX",
+        "App Store",
+      ],
+      icon: Zap,
+      color: "from-gray-700 to-gray-500",
+      iconColor: "text-gray-600",
     },
     {
-      icon: Cloud,
-      title: 'Cloud & DevOps',
-      color: 'text-foreground',
-      skills: ['AWS', 'Docker', 'Git', 'CI/CD', 'Linux', 'Nginx']
+      title: "Websites",
+      skills: [
+        "HTML5",
+        "CSS3",
+        "JavaScript",
+        "WordPress",
+        "SEO Optimization",
+        "Responsive Design",
+      ],
+      icon: Star,
+      color: "from-gray-600 to-gray-400",
+      iconColor: "text-gray-500",
     },
     {
-      icon: Brain,
-      title: 'AI & Machine Learning',
-      color: 'text-foreground',
-      skills: ['Python', 'TensorFlow', 'OpenAI', 'Machine Learning', 'Data Analysis']
+      title: "Full Stack Solutions",
+      skills: [
+        "MERN Stack",
+        "Python Django",
+        "PostgreSQL",
+        "AWS Cloud",
+        "Docker",
+        "API Development",
+      ],
+      icon: Cpu,
+      color: "from-gray-500 to-gray-300",
+      iconColor: "text-gray-400",
     },
-    {
-      icon: Smartphone,
-      title: 'Mobile Development',
-      color: 'text-foreground',
-      skills: ['React Native', 'Flutter', 'iOS', 'Android', 'Mobile UI/UX']
-    },
-    {
-      icon: GitBranch,
-      title: 'Tools & Workflow',
-      color: 'text-foreground',
-      skills: ['Git', 'GitHub', 'VS Code', 'Figma', 'Postman', 'Agile']
-    }
   ];
 
+  const stats = [
+    {
+      label: "Projects Delivered",
+      value: "25+",
+      icon: TrendingUp,
+      color: "from-gray-800 to-gray-600",
+    },
+    {
+      label: "Years Experience",
+      value: "3+",
+      icon: Star,
+      color: "from-gray-700 to-gray-500",
+    },
+    {
+      label: "Technologies Mastered",
+      value: "15+",
+      icon: Zap,
+      color: "from-gray-600 to-gray-400",
+    },
+  ];
+
+  useEffect(() => {
+    // Role animation effect
+    const roleInterval = setInterval(() => {
+      setCurrentRole((prev) => (prev + 1) % roles.length);
+    }, 4000);
+
+    return () => clearInterval(roleInterval);
+  }, [roles.length]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // GSAP animation timeline for section entrance
+            const tl = gsap.timeline();
+
+            tl.fromTo(
+              titleRef.current,
+              {
+                opacity: 0,
+                y: 50,
+                scale: 0.9,
+              },
+              {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 1,
+                ease: "power3.out",
+              }
+            )
+              .fromTo(
+                contentRef.current,
+                {
+                  opacity: 0,
+                  y: 30,
+                },
+                {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.8,
+                  ease: "power2.out",
+                },
+                "-=0.3"
+              )
+              .fromTo(
+                categoriesRef.current,
+                {
+                  opacity: 0,
+                  y: 40,
+                },
+                {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.8,
+                  ease: "power2.out",
+                },
+                "-=0.2"
+              )
+              .fromTo(
+                statsRef.current,
+                {
+                  opacity: 0,
+                  y: 40,
+                  scale: 0.95,
+                },
+                {
+                  opacity: 1,
+                  y: 0,
+                  scale: 1,
+                  duration: 1,
+                  ease: "power3.out",
+                },
+                "-=0.1"
+              );
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="tech-stack" className="py-20 px-6 bg-background-secondary">
-      <div className="container mx-auto max-w-7xl">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Technology <span className="text-gradient">Stack</span>
+    <section
+      id="tech-stack"
+      ref={sectionRef}
+      className="py-24 relative overflow-hidden bg-white"
+    >
+      {/* Parallax Background - Subtle tech pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div
+          className="h-full w-full"
+          style={{
+            backgroundImage: `
+            linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px),
+            linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px)
+          `,
+            backgroundSize: "100px 100px",
+          }}
+        />
+      </div>
+
+      <div className="container mx-auto w-[90%] relative z-10">
+        {/* Section Header */}
+        <div ref={titleRef} className="text-center mb-20">
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 mb-8 tracking-tight">
+            Technical Expertise
           </h2>
-          <div className="mb-4">
-            <p className="text-2xl font-bold text-foreground">
-              I am a{' '}
-              <span className="text-primary font-mono animate-pulse border-b-2 border-primary pb-1">
+          <p className="text-2xl md:text-3xl text-gray-600 w-full mx-auto leading-relaxed max-w-6xl">
+            With 3+ years of experience building modern web applications and
+            digital solutions across multiple technologies and platforms.
+          </p>
+
+          {/* Dynamic Role Display */}
+          <div className="mt-8">
+            <p className="text-2xl md:text-3xl text-gray-600 font-medium">
+              Specializing as a{" "}
+              <span className="text-gray-800 font-mono border-b-4 border-gray-800 pb-2 px-2 inline-block min-w-[300px]">
                 {roles[currentRole]}
               </span>
             </p>
           </div>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            With 3+ years of experience building modern web applications and digital solutions 
-            across multiple technologies and platforms.
-          </p>
         </div>
 
         {/* Tech Categories Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+        <div
+          ref={categoriesRef}
+          className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20"
+        >
           {techCategories.map((category, index) => (
-            <Card 
+            <Card
               key={category.title}
-              className="p-6 bg-card border-border hover-lift group animate-fade-in relative overflow-hidden"
+              className="retro-card p-8 hover:scale-105 transition-all duration-500 group"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              {/* Retro grid background */}
-              <div className="absolute inset-0 opacity-5">
-                <div className="h-full w-full" style={{
-                  backgroundImage: 'linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px)',
-                  backgroundSize: '20px 20px'
-                }} />
-              </div>
-              
-              <div className="relative z-10">
-                <div className="mb-4">
-                  <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center mb-3 group-hover:bg-primary/10 transition-colors">
-                    <category.icon className={`h-6 w-6 ${category.color}`} />
+              <CardContent className="p-0">
+                <div className="text-center mb-6">
+                  <div className="mb-4">
+                    <category.icon className="h-12 w-12 text-black mx-auto" />
                   </div>
-                  <h3 className="font-semibold text-foreground text-sm">{category.title}</h3>
+                  <h3 className="text-2xl font-bold text-gray-800 mb-4">
+                    {category.title}
+                  </h3>
                 </div>
-                
-                <div className="flex flex-wrap gap-1.5">
+                <div className="flex flex-wrap gap-2 justify-center">
                   {category.skills.map((skill) => (
-                    <Badge 
-                      key={skill} 
-                      variant="outline" 
-                      className="text-xs px-2 py-0.5 bg-background border-border hover:bg-muted hover:border-primary transition-colors"
+                    <Badge
+                      key={skill}
+                      variant="secondary"
+                      className="px-4 py-2 text-sm font-medium bg-gray-100 border border-gray-300 hover:bg-gray-200 hover:border-gray-800 hover:text-gray-800 transition-all duration-300 hover:scale-105 text-gray-900"
                     >
                       {skill}
                     </Badge>
                   ))}
                 </div>
-              </div>
+              </CardContent>
             </Card>
           ))}
         </div>
 
-        {/* Core Technologies */}
-        <div className="max-w-4xl mx-auto mb-12">
-          <Card className="p-8 bg-card border-border relative overflow-hidden">
-            {/* Retro background pattern */}
-            <div className="absolute inset-0 opacity-5">
-              <div className="h-full w-full" style={{
-                backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.1) 10px, rgba(0,0,0,0.1) 20px)',
-              }} />
-            </div>
-            
-            <div className="relative z-10">
-              <h3 className="text-2xl font-bold mb-6 text-center text-foreground flex items-center justify-center">
-                <Cpu className="h-6 w-6 mr-3 text-primary" />
-                Core Technologies
-              </h3>
-              <div className="grid md:grid-cols-2 gap-6">
-                {[
-                  { name: 'JavaScript/TypeScript', level: 90 },
-                  { name: 'React/Next.js', level: 85 },
-                  { name: 'Python', level: 80 },
-                  { name: 'Node.js', level: 75 },
-                  { name: 'Cloud Platforms', level: 70 },
-                  { name: 'Mobile Development', level: 65 }
-                ].map((tech) => (
-                  <div key={tech.name} className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-foreground font-medium">{tech.name}</span>
-                      <span className="text-muted-foreground">{tech.level}%</span>
+        {/* Experience Stats */}
+        <div ref={statsRef} className="w-full mx-auto">
+          <Card className="retro-card p-12 hover:scale-105 transition-all duration-500">
+            <CardContent className="p-0">
+              <div className="text-center mb-12">
+                <h3 className="text-4xl md:text-5xl font-bold text-gray-800 mb-8">
+                  Experience Highlights
+                </h3>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {stats.map((stat, index) => (
+                  <div key={stat.label} className="text-center group">
+                    <div className="mb-4">
+                      <stat.icon className="h-16 w-16 text-black mx-auto" />
                     </div>
-                    <div className="h-3 bg-muted rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-primary rounded-full transition-all duration-1000 ease-out"
-                        style={{ width: `${tech.level}%` }}
-                      />
+                    <div className="text-4xl md:text-5xl font-black text-gray-800 mb-2">
+                      {stat.value}
+                    </div>
+                    <div className="text-lg text-gray-600 font-medium">
+                      {stat.label}
                     </div>
                   </div>
                 ))}
               </div>
-            </div>
-          </Card>
-        </div>
-
-        {/* Experience Stats */}
-        <div className="text-center">
-          <Card className="p-8 bg-card border-border inline-block relative overflow-hidden">
-            <div className="absolute inset-0 opacity-5">
-              <div className="h-full w-full" style={{
-                backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(0,0,0,0.3) 1px, transparent 0)',
-                backgroundSize: '20px 20px'
-              }} />
-            </div>
-            <div className="relative z-10">
-              <div className="grid grid-cols-3 gap-8 mb-4">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary mb-1">25+</div>
-                  <div className="text-sm text-muted-foreground">Projects</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary mb-1">3+</div>
-                  <div className="text-sm text-muted-foreground">Years Experience</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary mb-1">15+</div>
-                  <div className="text-sm text-muted-foreground">Technologies</div>
-                </div>
-              </div>
-              <p className="text-muted-foreground text-sm">
-                Ready to build something amazing together?
-              </p>
-            </div>
+            </CardContent>
           </Card>
         </div>
       </div>
