@@ -118,7 +118,7 @@ src/
 ```bash
 # Clone the repository
 git clone <your-repo-url>
-cd chandu-innovation-lab
+cd Portfolio
 
 # Install dependencies
 npm install
@@ -128,6 +128,28 @@ npm run dev
 
 # Build for production
 npm run build
+```
+
+## 🚀 **Deployment**
+
+### **Vercel Deployment (Recommended)**
+This project is configured for easy deployment on Vercel:
+
+1. **Push to GitHub**: Ensure your code is pushed to a GitHub repository
+2. **Connect to Vercel**: 
+   - Go to [vercel.com](https://vercel.com)
+   - Sign in with your GitHub account
+   - Click "New Project" and select your repository
+3. **Automatic Deployment**: Vercel will automatically detect the Vite configuration and deploy
+4. **Custom Domain**: Add your custom domain in Vercel dashboard
+
+### **Manual Deployment**
+```bash
+# Build the project
+npm run build
+
+# The dist folder contains your production build
+# Upload the contents to your hosting provider
 ```
 
 ### **Development Commands**
