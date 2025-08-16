@@ -397,6 +397,38 @@
     @apply bg-white border-2 border-gray-200 shadow-lg hover:shadow-xl transition-all duration-500 hover:scale-105;
   }
 
+  /* Contact Card Specific Styles */
+  .contact-card {
+    @apply overflow-hidden;
+  }
+
+  .contact-card .contact-value {
+    @apply break-words break-all hyphens-auto;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  /* Ensure email addresses wrap properly on all devices */
+  .contact-card .contact-value[data-type="email"] {
+    font-size: clamp(0.875rem, 2.5vw, 1.125rem);
+    line-height: 1.4;
+    padding: 0 0.5rem;
+  }
+
+  /* Mobile-specific contact card adjustments */
+  @media (max-width: 768px) {
+    .contact-card {
+      min-height: 260px;
+    }
+    
+    .contact-card .contact-value {
+      font-size: 0.875rem;
+      padding: 0 0.25rem;
+    }
+  }
+
   .retro-card-hover {
     @apply hover:border-gray-400 hover:bg-gray-50;
   }
