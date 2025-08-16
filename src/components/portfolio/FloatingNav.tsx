@@ -1,11 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSmoothScroll } from '@/hooks/use-smooth-scroll';
+import { useResponsive } from '@/hooks/use-mobile';
+import { Menu, X, ChevronDown } from 'lucide-react';
 
 const FloatingNav = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
   const [currentSection, setCurrentSection] = useState('hero');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
   const { scrollToSection } = useSmoothScroll();
+  const screenSize = useResponsive();
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   const navItems = [
     { id: 'hero', label: 'Home' },
@@ -58,13 +64,47 @@ const FloatingNav = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [navItems]);
 
-  const handleNavClick = (sectionId: string) => {
-    scrollToSection(sectionId, { 
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    if (isMobileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [isMobileMenuOpen]);
+
+  const handleNavClick = async (sectionId: string) => {
+    if (isAnimating) return; // Prevent multiple clicks during animation
+    
+    setIsAnimating(true);
+    setIsMobileMenuOpen(false);
+    
+    await scrollToSection(sectionId, { 
       duration: 1000, 
       easing: 'easeInOut',
       offset: 80 
     });
+    
+    // Reset animation state after a delay
+    setTimeout(() => setIsAnimating(false), 1200);
   };
+
+  // Close mobile menu when screen size changes
+  useEffect(() => {
+    if (screenSize !== 'mobile') {
+      setIsMobileMenuOpen(false);
+    }
+  }, [screenSize]);
 
   if (!isVisible) return null;
 
@@ -88,6 +128,148 @@ const FloatingNav = () => {
   // Accent line color
   const accentLineColor = isHero ? 'bg-white/30' : isFooter ? 'bg-black/30' : 'bg-white/30';
 
+  // Mobile Navigation
+  if (screenSize === 'mobile') {
+    return (
+      <div className="fixed top-4 left-4 right-4 z-50">
+        {/* Mobile Navigation Bar */}
+        <nav 
+          ref={mobileMenuRef}
+          className={`${bgColor} ${borderColor} ${shadowColor} backdrop-blur-xl border rounded-2xl px-4 py-3 shadow-2xl transition-all duration-300`}
+        >
+          <div className="flex items-center justify-between">
+            {/* Logo Section */}
+            <div className="flex items-center">
+              <img 
+                src="./Logo.png" 
+                alt="Chandu Kalluru Logo" 
+                className="w-10 h-10 rounded-xl object-cover"
+              />
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className={`p-2 rounded-lg transition-all duration-300 ${inactiveTextColor} ${inactiveHoverBg} active:scale-95`}
+              aria-label="Toggle mobile menu"
+              aria-expanded={isMobileMenuOpen}
+            >
+              {isMobileMenuOpen ? (
+                <X size={20} className="transition-transform duration-300 rotate-180" />
+              ) : (
+                <Menu size={20} className="transition-transform duration-300" />
+              )}
+            </button>
+          </div>
+
+          {/* Mobile Menu Dropdown with smooth animation */}
+          <div 
+            className={`overflow-hidden transition-all duration-300 ease-in-out ${
+              isMobileMenuOpen ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0 mt-0'
+            }`}
+          >
+            <div className="pt-4 border-t border-current/20">
+              <ul className="space-y-2">
+                                 {navItems.map((item, index) => (
+                   <li key={item.id}>
+                     <button
+                       onClick={() => handleNavClick(item.id)}
+                       disabled={isAnimating}
+                       className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-300 font-medium tracking-wide ${
+                         activeSection === item.id
+                           ? `${activeBgColor} ${activeTextColor} shadow-lg`
+                           : `${inactiveTextColor} ${inactiveHoverBg}`
+                       } ${isAnimating ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'} ${
+                         isMobileMenuOpen ? 'mobile-nav-slide-in' : ''
+                       }`}
+                       title={item.label}
+                       style={{ animationDelay: `${index * 50}ms` }}
+                     >
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium">
+                          {item.label}
+                        </span>
+                        
+                        {/* Active indicator */}
+                        {activeSection === item.id && (
+                          <div className={`w-2 h-2 ${activeIndicatorColor} rounded-full animate-pulse`} />
+                        )}
+                        
+                        {/* Chevron indicator for better UX */}
+                        <ChevronDown 
+                          size={16} 
+                          className={`transition-transform duration-300 ${inactiveTextColor} opacity-60`}
+                        />
+                      </div>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          
+          {/* Subtle accent line */}
+          <div className={`absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-24 h-0.5 ${accentLineColor} rounded-full`} />
+        </nav>
+
+
+      </div>
+    );
+  }
+
+  // Tablet Navigation
+  if (screenSize === 'tablet') {
+    return (
+      <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
+        {/* Tablet Navigation Bar */}
+        <nav className={`${bgColor} ${borderColor} ${shadowColor} backdrop-blur-xl border rounded-2xl px-6 py-4 shadow-2xl transition-all duration-300`}>
+          <div className="flex items-center justify-between">
+            {/* Logo Section */}
+            <div className="flex items-center">
+              <img 
+                src="./Logo.png" 
+                alt="Chandu Kalluru Logo" 
+                className="w-12 h-12 rounded-xl object-cover"
+              />
+            </div>
+
+            {/* Navigation Items - Compact for tablet */}
+            <ul className="flex items-center space-x-4 ml-8">
+              {navItems.map((item) => (
+                <li key={item.id}>
+                  <button
+                    onClick={() => handleNavClick(item.id)}
+                    disabled={isAnimating}
+                    className={`group relative px-3 py-2 rounded-full transition-all duration-300 font-medium tracking-wide text-xs ${
+                      activeSection === item.id
+                        ? `${activeBgColor} ${activeTextColor} shadow-lg scale-105`
+                        : `${inactiveTextColor} ${inactiveHoverBg}`
+                    } ${isAnimating ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}`}
+                    title={item.label}
+                  >
+                    {/* Label */}
+                    <span className="text-xs font-medium">
+                      {item.label}
+                    </span>
+                    
+                    {/* Active indicator */}
+                    {activeSection === item.id && (
+                      <div className={`absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 ${activeIndicatorColor} rounded-full animate-pulse`} />
+                    )}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+          {/* Subtle accent line */}
+          <div className={`absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-28 h-0.5 ${accentLineColor} rounded-full`} />
+        </nav>
+      </div>
+    );
+  }
+
+  // Desktop Navigation
   return (
     <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
       {/* Main Navigation */}
@@ -108,11 +290,12 @@ const FloatingNav = () => {
               <li key={item.id}>
                 <button
                   onClick={() => handleNavClick(item.id)}
+                  disabled={isAnimating}
                   className={`group relative px-4 py-2 rounded-full transition-all duration-300 font-medium tracking-wide ${
                     activeSection === item.id
                       ? `${activeBgColor} ${activeTextColor} shadow-lg scale-105`
                       : `${inactiveTextColor} ${inactiveHoverBg}`
-                  }`}
+                  } ${isAnimating ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}`}
                   title={item.label}
                 >
                   {/* Label */}
@@ -122,7 +305,7 @@ const FloatingNav = () => {
                   
                   {/* Active indicator */}
                   {activeSection === item.id && (
-                    <div className={`absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 ${activeIndicatorColor} rounded-full`} />
+                    <div className={`absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 ${activeIndicatorColor} rounded-full animate-pulse`} />
                   )}
                 </button>
               </li>
