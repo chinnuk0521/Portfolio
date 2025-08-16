@@ -6,57 +6,57 @@
 
 @layer base {
   :root {
-    /* Background System */
-    --background: 220 27% 6%;
-    --background-secondary: 221 27% 8%;
-    --foreground: 220 13% 94%;
+    /* Background System - Retro Black/White */
+    --background: 0 0% 98%;
+    --background-secondary: 0 0% 95%;
+    --foreground: 0 0% 5%;
 
     /* Card System */
-    --card: 220 27% 8%;
-    --card-foreground: 220 13% 94%;
-    --card-hover: 220 27% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 5%;
+    --card-hover: 0 0% 97%;
 
     /* Glass Effect */
-    --glass: 220 27% 12%;
-    --glass-border: 220 13% 20%;
+    --glass: 0 0% 100%;
+    --glass-border: 0 0% 85%;
 
-    /* Brand Colors - Indigo/Violet Theme */
-    --primary: 239 84% 67%;
-    --primary-hover: 239 84% 72%;
-    --primary-foreground: 220 27% 6%;
+    /* Brand Colors - Monochrome with subtle grays */
+    --primary: 0 0% 10%;
+    --primary-hover: 0 0% 20%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 262 83% 58%;
-    --secondary-hover: 262 83% 63%;
-    --secondary-foreground: 220 13% 94%;
+    --secondary: 0 0% 25%;
+    --secondary-hover: 0 0% 35%;
+    --secondary-foreground: 0 0% 98%;
 
-    --accent: 217 91% 60%;
-    --accent-hover: 217 91% 65%;
-    --accent-foreground: 220 27% 6%;
+    --accent: 0 0% 40%;
+    --accent-hover: 0 0% 50%;
+    --accent-foreground: 0 0% 98%;
 
     /* Muted System */
-    --muted: 220 13% 15%;
-    --muted-foreground: 220 13% 65%;
+    --muted: 0 0% 90%;
+    --muted-foreground: 0 0% 45%;
 
     /* Status Colors */
     --destructive: 0 84% 60%;
-    --destructive-foreground: 220 13% 94%;
+    --destructive-foreground: 0 0% 98%;
     --success: 142 71% 45%;
     --warning: 38 92% 50%;
 
     /* Borders and Inputs */
-    --border: 220 13% 20%;
-    --input: 220 13% 15%;
-    --ring: 239 84% 67%;
+    --border: 0 0% 85%;
+    --input: 0 0% 95%;
+    --ring: 0 0% 10%;
 
-    /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(239 84% 67%) 0%, hsl(262 83% 58%) 50%, hsl(217 91% 60%) 100%);
-    --gradient-card: linear-gradient(135deg, hsl(220 27% 8%) 0%, hsl(220 27% 10%) 100%);
-    --gradient-accent: linear-gradient(90deg, hsl(239 84% 67%) 0%, hsl(262 83% 58%) 100%);
+    /* Gradients - Subtle grayscale */
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 10%) 0%, hsl(0 0% 25%) 50%, hsl(0 0% 40%) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(0 0% 97%) 100%);
+    --gradient-accent: linear-gradient(90deg, hsl(0 0% 10%) 0%, hsl(0 0% 25%) 100%);
 
     /* Shadows */
-    --shadow-glow: 0 0 50px hsl(239 84% 67% / 0.3);
-    --shadow-card: 0 8px 32px hsl(220 27% 4% / 0.4);
-    --shadow-elevated: 0 20px 60px hsl(220 27% 4% / 0.6);
+    --shadow-glow: 0 0 50px hsl(0 0% 10% / 0.2);
+    --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.1);
+    --shadow-elevated: 0 20px 60px hsl(0 0% 0% / 0.15);
 
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -127,9 +127,12 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    background-image: radial-gradient(circle at 20% 80%, hsl(239 84% 67% / 0.15) 0%, transparent 50%),
-                      radial-gradient(circle at 80% 20%, hsl(262 83% 58% / 0.15) 0%, transparent 50%),
-                      radial-gradient(circle at 40% 40%, hsl(217 91% 60% / 0.1) 0%, transparent 50%);
+    background-image: 
+      linear-gradient(90deg, hsl(0 0% 96%) 1px, transparent 1px),
+      linear-gradient(hsl(0 0% 96%) 1px, transparent 1px),
+      radial-gradient(circle at 25% 25%, hsl(0 0% 5% / 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, hsl(0 0% 5% / 0.05) 0%, transparent 50%);
+    background-size: 50px 50px, 50px 50px, 800px 800px, 800px 800px;
   }
 }
 

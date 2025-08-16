@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { ChevronDown, Github, Linkedin, Mail } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import heroImage from '@/assets/hero-bg.jpg';
+import retroBg from '@/assets/retro-bg.jpg';
 
 const HeroSection = () => {
   const [displayText, setDisplayText] = useState('');
@@ -30,15 +30,14 @@ const HeroSection = () => {
     <section className="min-h-screen relative flex items-center justify-center overflow-hidden">
       {/* Background */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
-        style={{ backgroundImage: `url(${heroImage})` }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10"
+        style={{ backgroundImage: `url(${retroBg})` }}
       />
-      <div className="absolute inset-0 bg-gradient-to-br from-background/90 via-background/70 to-background/90" />
       
-      {/* Floating Elements */}
-      <div className="absolute top-20 left-20 w-2 h-2 bg-primary rounded-full animate-float opacity-60" />
-      <div className="absolute top-40 right-32 w-1 h-1 bg-accent rounded-full animate-float delay-1000 opacity-40" />
-      <div className="absolute bottom-32 left-1/4 w-1.5 h-1.5 bg-secondary rounded-full animate-float delay-2000 opacity-50" />
+      {/* Floating Elements - Retro geometric shapes */}
+      <div className="absolute top-20 left-20 w-4 h-4 border border-primary opacity-30 animate-float" />
+      <div className="absolute top-40 right-32 w-2 h-2 bg-primary opacity-40 animate-float delay-1000" style={{ clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }} />
+      <div className="absolute bottom-32 left-1/4 w-3 h-3 border border-accent opacity-25 animate-float delay-2000" style={{ transform: 'rotate(45deg)' }} />
       
       {/* Content */}
       <div className="container mx-auto px-6 text-center z-10">
