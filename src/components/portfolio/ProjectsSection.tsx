@@ -143,60 +143,60 @@ const ProjectsSection = () => {
             // GSAP animation timeline for section entrance
             const tl = gsap.timeline();
 
-            tl.fromTo(
+                        tl.fromTo(
               titleRef.current,
               {
                 opacity: 0,
-                y: 50,
-                scale: 0.9,
+                y: 30,
+                scale: 0.95,
               },
               {
                 opacity: 1,
                 y: 0,
                 scale: 1,
-                duration: 1,
-                ease: "power3.out",
+                duration: 0.4,
+                ease: "power1.out",
               }
             )
               .fromTo(
                 contentRef.current,
                 {
                   opacity: 0,
-                  y: 30,
+                  y: 20,
                 },
                 {
                   opacity: 1,
                   y: 0,
-                  duration: 0.8,
-                  ease: "power2.out",
+                  duration: 0.5,
+                  ease: "power1.out",
                 },
-                "-=0.3"
+                "-=0.2"
               )
               .fromTo(
                 statsRef.current,
                 {
                   opacity: 0,
-                  y: 40,
+                  y: 25,
                 },
                 {
                   opacity: 1,
                   y: 0,
-                  duration: 0.8,
-                  ease: "power2.out",
+                  duration: 0.5,
+                  ease: "power1.out",
                 },
-                "-=0.2"
+                "-=0.1"
               )
               .fromTo(
                 projectsRef.current,
                 {
                   opacity: 0,
-                  y: 40,
+                  y: 25,
                 },
                 {
                   opacity: 1,
                   y: 0,
-                  duration: 0.8,
-                  ease: "power2.out",
+                  duration: 0.5,
+                  ease: "power1.out",
                 },
                 "-=0.1"
               )
@@ -204,22 +204,22 @@ const ProjectsSection = () => {
                 ctaRef.current,
                 {
                   opacity: 0,
-                  y: 40,
-                  scale: 0.95,
+                  y: 25,
+                  scale: 0.98,
                 },
                 {
                   opacity: 1,
                   y: 0,
                   scale: 1,
-                  duration: 1,
-                  ease: "power3.out",
+                  duration: 0.4,
+                  ease: "power1.out",
                 },
                 "-=0.1"
               );
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.05, rootMargin: '50px' }
     );
 
     if (sectionRef.current) {
@@ -249,7 +249,7 @@ const ProjectsSection = () => {
         />
       </div>
 
-      <div className="container mx-auto w-[90%] relative z-10">
+      <div className="w-[90%] mx-auto px-4 relative z-10">
         {/* Section Header */}
         <div ref={titleRef} className="text-center mb-20">
           <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 mb-8 tracking-tight">
@@ -268,8 +268,8 @@ const ProjectsSection = () => {
           {stats.map((stat, index) => (
             <Card 
               key={stat.label}
-              className="retro-card p-6 text-center hover:scale-105 transition-all duration-500 group"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className="retro-card p-6 text-center hover:scale-105 transition-all duration-300 group"
+              style={{ animationDelay: `${index * 0.05}s` }}
             >
               <CardContent className="p-0">
                 <div className="mb-4">
@@ -294,8 +294,8 @@ const ProjectsSection = () => {
           {projects.map((project, index) => (
             <Card 
               key={project.title}
-              className="retro-card overflow-hidden hover:scale-105 transition-all duration-500 group"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className="retro-card overflow-hidden hover:scale-105 transition-all duration-300 group"
+              style={{ animationDelay: `${index * 0.05}s` }}
             >
               <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
                 <img
@@ -357,7 +357,7 @@ const ProjectsSection = () => {
 
         {/* Call to Action */}
         <div ref={ctaRef} className="text-center">
-          <Card className="retro-card p-16 hover:scale-105 transition-all duration-500">
+                      <Card className="retro-card p-16 hover:scale-105 transition-all duration-300">
             <CardContent className="p-0">
               <h3 className="text-4xl md:text-5xl font-bold text-gray-800 mb-8">
                 Ready to Start Your Project?

@@ -4,6 +4,7 @@ import { useSmoothScroll } from '@/hooks/use-smooth-scroll';
 const BackToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [currentSection, setCurrentSection] = useState('hero');
+  const [isNavOpen, setIsNavOpen] = useState(false);
   const { scrollToTop } = useSmoothScroll();
 
   useEffect(() => {
@@ -30,15 +31,44 @@ const BackToTop = () => {
       }
     };
 
+    // Check for navigation menu state
+    const checkNavState = () => {
+      const navMenu = document.querySelector('[data-nav-menu="true"]');
+      if (navMenu) {
+        const isOpen = navMenu.classList.contains('opacity-100');
+        setIsNavOpen(isOpen);
+      }
+    };
+
+    // Set up observer to watch for navigation state changes
+    const observer = new MutationObserver(checkNavState);
+    const navContainer = document.querySelector('[data-nav-container="true"]');
+    
+    if (navContainer) {
+      observer.observe(navContainer, {
+        attributes: true,
+        attributeFilter: ['class'],
+        subtree: true
+      });
+    }
+
+    // Initial check
+    checkNavState();
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      observer.disconnect();
+    };
   }, []);
 
   const handleClick = () => {
     scrollToTop({ duration: 800, easing: 'easeOut' });
   };
 
-  if (!isVisible) return null;
+  // Hide BackToTop when navigation is open
+  if (!isVisible || isNavOpen) return null;
 
   // Determine colors based on current section
   const isHero = currentSection === 'hero';

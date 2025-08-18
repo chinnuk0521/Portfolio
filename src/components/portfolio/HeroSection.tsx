@@ -81,45 +81,49 @@ const HeroSection = () => {
         "-=0.3"
       );
 
-    // Parallax background effect on scroll
+    // Optimized parallax background effect on scroll
+    let ticking = false;
     const handleScroll = () => {
-      const scrolled = window.pageYOffset;
-      const rate = scrolled * -0.5;
-      gsap.to(backgroundRef.current, {
-        y: rate,
-        duration: 0.1,
-      });
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrolled = window.pageYOffset;
+          const rate = scrolled * -0.3; // Reduced parallax intensity
+          gsap.set(backgroundRef.current, { y: rate }); // Use set instead of to for better performance
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
-  // Role animation effect
+  // Optimized role animation effect
   useEffect(() => {
     const roleElement = roleRef.current;
     if (roleElement) {
-      // Animate role changes every 3 seconds
+      // Animate role changes every 4 seconds with reduced complexity
       const interval = setInterval(() => {
         gsap.to(roleElement, {
           opacity: 0,
-          y: -20,
-          duration: 0.3,
-          ease: "power2.out",
+          y: -15,
+          duration: 0.2,
+          ease: "power1.out",
           onComplete: () => {
             setCurrentRole((prev) => (prev + 1) % roles.length);
             gsap.to(roleElement, {
               opacity: 1,
               y: 0,
-              duration: 0.5,
-              ease: "power2.out",
+              duration: 0.3,
+              ease: "power1.out",
             });
           },
         });
-      }, 3000);
+      }, 4000); // Increased interval for better performance
 
       return () => clearInterval(interval);
     }
@@ -160,26 +164,17 @@ const HeroSection = () => {
       />
 
       {/* Main Content Container */}
-      <div className="container mx-auto px-6 text-center z-10 relative w-full">
+      <div className="w-[90%] mx-auto px-4 text-center z-10 relative">
         {/* Epic Name Display - Covers almost full screen width */}
         <div className="mb-16 relative">
-          <h1
-            ref={nameRef}
-            className="hero-name cinematic-text text-6xl md:text-8xl lg:text-[10rem] xl:text-[12rem] 2xl:text-[14rem] font-black tracking-tighter leading-none select-none"
-            style={{
-              textShadow: "0 0 20px rgba(0,0,0,0.5)",
-              WebkitTextStroke: "1px rgba(0,0,0,0.1)",
-            }}
-          >
-            <span className="text-gray-900 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 bg-clip-text text-transparent">
+                      <h1
+              ref={nameRef}
+              className="hero-name cinematic-text text-6xl md:text-8xl lg:text-[10rem] xl:text-[12rem] 2xl:text-[14rem] font-black tracking-tighter leading-none select-none text-black"
+            >
               CHANDU KALLURU
-            </span>
-          </h1>
+            </h1>
 
-          {/* Enhanced glow effect behind name */}
-          <div className="absolute inset-0 -z-10 blur-3xl opacity-30">
-            <div className="w-full h-full bg-gradient-to-r from-gray-800 via-gray-600 to-gray-800 rounded-full scale-150" />
-          </div>
+
         </div>
 
         {/* Content Section - Fades in after name reveal */}

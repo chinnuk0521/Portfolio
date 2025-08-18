@@ -852,3 +852,52 @@
 .mobile-nav-scale-in {
   animation: var(--scale-in);
 }
+
+/* Performance Optimizations */
+.retro-card {
+  will-change: transform, box-shadow;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Optimize animations */
+.hero-name, .role-animation {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Reduce paint operations */
+.parallax-bg {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Optimize hover effects */
+.group:hover .group-hover\:scale-110 {
+  will-change: transform;
+  transform: translateZ(0) scale(1.1);
+}
+
+/* Smooth scrolling optimization */
+html {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Reduce layout thrashing */
+* {
+  box-sizing: border-box;
+}
+
+/* Optimize transitions */
+.transition-all {
+  will-change: transform, opacity, box-shadow;
+}
+
+/* Reduce repaints on scroll */
+section {
+  contain: layout style paint;
+}
+

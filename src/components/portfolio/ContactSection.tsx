@@ -69,63 +69,63 @@ const ContactSection = () => {
               titleRef.current,
               {
                 opacity: 0,
-                y: 50,
-                scale: 0.9,
+                y: 30,
+                scale: 0.95,
               },
               {
                 opacity: 1,
                 y: 0,
                 scale: 1,
-                duration: 1,
-                ease: "power3.out",
+                duration: 0.4,
+                ease: "power1.out",
               }
             )
               .fromTo(
                 contentRef.current,
                 {
                   opacity: 0,
-                  y: 30,
+                  y: 20,
                 },
                 {
                   opacity: 1,
                   y: 0,
-                  duration: 0.8,
-                  ease: "power2.out",
+                  duration: 0.5,
+                  ease: "power1.out",
                 },
-                "-=0.3"
+                "-=0.2"
               )
               .fromTo(
                 contactRef.current,
                 {
                   opacity: 0,
-                  y: 40,
+                  y: 25,
                 },
                 {
                   opacity: 1,
                   y: 0,
-                  duration: 0.8,
-                  ease: "power2.out",
+                  duration: 0.5,
+                  ease: "power1.out",
                 },
-                "-=0.2"
+                "-=0.1"
               )
               .fromTo(
                 socialRef.current,
                 {
                   opacity: 0,
-                  y: 40,
+                  y: 25,
                 },
                 {
                   opacity: 1,
                   y: 0,
-                  duration: 0.8,
-                  ease: "power2.out",
+                  duration: 0.5,
+                  ease: "power1.out",
                 },
                 "-=0.1"
               );
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.05, rootMargin: '50px' }
     );
 
     if (sectionRef.current) {
@@ -155,7 +155,7 @@ const ContactSection = () => {
         />
       </div>
 
-      <div className="container mx-auto w-[90%] relative z-10">
+      <div className="w-[90%] mx-auto px-4 relative z-10">
         {/* Section Header */}
         <div ref={titleRef} className="text-center mb-20">
           <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-gray-900 mb-8 tracking-tight">
@@ -176,8 +176,8 @@ const ContactSection = () => {
             {contactMethods.map((method, index) => (
               <Card
                 key={method.title}
-                className="retro-card contact-card p-6 md:p-8 hover:scale-105 transition-all duration-500 group cursor-pointer min-h-[280px] md:min-h-[320px] flex flex-col"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                className="retro-card contact-card p-6 md:p-8 hover:scale-105 transition-all duration-300 group cursor-pointer min-h-[280px] md:min-h-[320px] flex flex-col"
+                style={{ animationDelay: `${index * 0.05}s` }}
                 onClick={method.action}
               >
                 <CardContent className="p-0 text-center flex flex-col h-full justify-between">
@@ -204,7 +204,7 @@ const ContactSection = () => {
 
         {/* Social Links */}
         <div ref={socialRef} className="text-center">
-          <Card className="retro-card p-8 md:p-12 hover:scale-105 transition-all duration-500">
+                      <Card className="retro-card p-8 md:p-12 hover:scale-105 transition-all duration-300">
             <CardContent className="p-0">
               <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-6 md:mb-8">
                 Connect With Me

@@ -1,5 +1,7 @@
 import HeroSection from "./HeroSection";
 import AboutSection from "./AboutSection";
+import ExperienceSection from "./ExperienceSection";
+import EducationSection from "./EducationSection";
 import TechStackSection from "./TechStackSection";
 import ProjectsSection from "./ProjectsSection";
 import ContactSection from "./ContactSection";
@@ -16,6 +18,12 @@ const Portfolio = () => {
       </section>
       <section id="about">
         <AboutSection />
+      </section>
+      <section id="experience">
+        <ExperienceSection />
+      </section>
+      <section id="education">
+        <EducationSection />
       </section>
       <section id="tech-stack">
         <TechStackSection />

@@ -73,69 +73,69 @@ const AboutSection = () => {
             // GSAP animation timeline for section entrance
             const tl = gsap.timeline();
 
-            tl.fromTo(
+                        tl.fromTo(
               titleRef.current,
               {
                 opacity: 0,
-                y: 50,
-                scale: 0.9,
+                y: 30,
+                scale: 0.95,
               },
               {
                 opacity: 1,
                 y: 0,
                 scale: 1,
-                duration: 1,
-                ease: "power3.out",
+                duration: 0.4,
+                ease: "power1.out",
               }
             )
               .fromTo(
                 contentRef.current,
                 {
                   opacity: 0,
-                  y: 30,
+                  y: 20,
                 },
                 {
                   opacity: 1,
                   y: 0,
-                  duration: 0.8,
-                  ease: "power2.out",
+                  duration: 0.5,
+                  ease: "power1.out",
                 },
-                "-=0.3"
+                "-=0.2"
               )
               .fromTo(
                 highlightsRef.current,
                 {
                   opacity: 0,
-                  y: 40,
+                  y: 25,
                 },
                 {
                   opacity: 1,
                   y: 0,
-                  duration: 0.8,
-                  ease: "power2.out",
+                  duration: 0.5,
+                  ease: "power1.out",
                 },
-                "-=0.2"
+                "-=0.1"
               )
               .fromTo(
                 philosophyRef.current,
                 {
                   opacity: 0,
-                  y: 40,
-                  scale: 0.95,
+                  y: 25,
+                  scale: 0.98,
                 },
                 {
                   opacity: 1,
                   y: 0,
                   scale: 1,
-                  duration: 1,
-                  ease: "power3.out",
+                  duration: 0.4,
+                  ease: "power1.out",
                 },
                 "-=0.1"
               );
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.05, rootMargin: '50px' }
     );
 
     if (sectionRef.current) {
@@ -165,7 +165,7 @@ const AboutSection = () => {
         />
       </div>
 
-      <div className="container mx-auto w-[90%] relative z-10">
+      <div className="w-[90%] mx-auto px-4 relative z-10">
         {/* Section Header */}
         <div ref={titleRef} className="text-center mb-20">
           <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 mb-8 tracking-tight">
@@ -187,7 +187,7 @@ const AboutSection = () => {
                   key={value}
                   variant="secondary"
                   className="px-6 py-3 text-lg font-semibold bg-gray-100 border-2 border-gray-300 hover:bg-gray-200 hover:border-gray-800 hover:text-gray-800 transition-all duration-300 hover:scale-105 text-gray-900"
-                  style={{ animationDelay: `${index * 0.1}s` }}
+                  style={{ animationDelay: `${index * 0.05}s` }}
                 >
                   {value}
                 </Badge>
@@ -204,8 +204,8 @@ const AboutSection = () => {
           {highlights.map((highlight, index) => (
             <Card
               key={highlight.title}
-              className="retro-card p-8 hover:scale-105 transition-all duration-500 group"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className="retro-card p-8 hover:scale-105 transition-all duration-300 group"
+              style={{ animationDelay: `${index * 0.05}s` }}
             >
               <CardContent className="p-0">
                 <div className="text-center">
@@ -226,7 +226,7 @@ const AboutSection = () => {
 
         {/* Philosophy Section */}
         <div ref={philosophyRef} className="text-center">
-          <Card className="retro-card p-16 hover:scale-105 transition-all duration-500">
+                      <Card className="retro-card p-16 hover:scale-105 transition-all duration-300">
             <CardContent className="p-0">
               <h3 className="text-4xl md:text-5xl font-bold text-gray-800 mb-8">
                 Innovation Through Simplicity
