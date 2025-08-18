@@ -146,7 +146,7 @@ const ExperienceSection = () => {
                   <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
                     <div className="flex items-start space-x-6">
                       {/* Company Logo */}
-                      <div className="w-20 h-20 rounded-2xl bg-black flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300 overflow-hidden flex-shrink-0">
+                      <div className="w-16 h-16 rounded-2xl bg-black flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300 overflow-hidden flex-shrink-0">
                         {exp.logoType === "image" ? (
                           <img 
                             src={exp.logo} 

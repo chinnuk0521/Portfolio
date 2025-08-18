@@ -116,10 +116,10 @@ const FloatingNav = () => {
   const hoverShadowColor = isHero ? 'hover:shadow-black/60' : isFooter ? 'hover:shadow-black/40' : 'hover:shadow-black/60';
 
   return (
-    <div className="fixed bottom-24 right-8 z-50" ref={navRef} data-nav-container="true">
+    <div className="fixed bottom-20 right-8 z-50" ref={navRef} data-nav-container="true">
       {/* Navigation Menu - Opens Upwards Above the Button */}
       <div 
-        className={`absolute bottom-16 right-0 transition-all duration-500 ease-out ${
+        className={`absolute bottom-12 right-0 transition-all duration-500 ease-out ${
           isOpen 
             ? 'opacity-100 translate-y-0 scale-100' 
             : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
@@ -164,12 +164,12 @@ const FloatingNav = () => {
                 onClick={() => handleNavClick(item.id)}
                 className={`
                   ${bgColor} ${textColor} ${borderColor} ${shadowColor} ${hoverShadowColor}
-                  backdrop-blur-xl border p-4 rounded-full shadow-lg
-                  transition-all duration-300 transform hover:scale-110
+                  backdrop-blur-xl border p-3 rounded-full shadow-lg
+                  transition-all duration-300 transform hover:scale-105
                   ${activeSection === item.id ? 'ring-2 ring-blue-500 ring-opacity-50' : ''}
                 `}
               >
-                <item.icon size={20} />
+                <item.icon size={18} />
               </button>
             </div>
           ))}
@@ -181,14 +181,14 @@ const FloatingNav = () => {
         onClick={toggleNav}
         className={`
           ${bgColor} ${textColor} ${borderColor} ${shadowColor} ${hoverShadowColor}
-          backdrop-blur-xl border p-4 rounded-full shadow-2xl 
-          transition-all duration-500 transform hover:scale-110 group
+          backdrop-blur-xl border p-3 rounded-full shadow-xl 
+          transition-all duration-500 transform hover:scale-105 group
           ${isOpen ? 'rotate-180' : ''}
         `}
       >
         {/* Icon */}
         <ChevronUp 
-          size={20} 
+          size={18} 
           className="transition-all duration-300 group-hover:-translate-y-1" 
         />
       </button>

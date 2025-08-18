@@ -85,12 +85,12 @@ const BackToTop = () => {
       {/* Main Button */}
       <button
         onClick={handleClick}
-        className={`${bgColor} ${textColor} ${borderColor} ${shadowColor} ${hoverShadowColor} backdrop-blur-xl border p-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110 group`}
+        className={`${bgColor} ${textColor} ${borderColor} ${shadowColor} ${hoverShadowColor} backdrop-blur-xl border p-3 rounded-full shadow-xl transition-all duration-300 transform hover:scale-105 group`}
         title="Back to Top"
       >
         {/* Icon */}
         <svg
-          className="w-6 h-6 transition-all duration-300 group-hover:-translate-y-1"
+          className="w-5 h-5 transition-all duration-300 group-hover:-translate-y-1"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
